@@ -33,6 +33,9 @@ function AdminRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
+    console.log("Sending form:", form);
+
     try {
       await API.post("/admin/register", form);
 
@@ -40,7 +43,8 @@ function AdminRegister() {
 
       navigate("/admin/login");
     } catch (error) {
-      console.error(error || error.message);
+      console.log("Error:", error.response?.data);
+    
       showAlert("Registration failed", "error");
     } finally {
       setLoading(false);
