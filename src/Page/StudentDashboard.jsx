@@ -24,7 +24,8 @@ function StudentDashboard() {
 
   const fetchDashboard = async () => {
     try {
-      const res = await API.get("http://localhost:5000/api/students/dashboard");
+      // const res = await API.get("http://localhost:5000/api/students/dashboard");
+      const res = await API.get(`${import.meta.env.VITE_BASE_URL}/students/dashboard`);
 
       setStudent(res.data.student);
       setResult(res.data.result);

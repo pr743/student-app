@@ -26,20 +26,36 @@ function AdminDashboard() {
 
   const [showSidebar, setShowSidebar] = useState(false);
 
-  const loadStats = async () => {
-    const res = await axios.get(
-      "http://localhost:5000/api/publish-results/stats"
-    );
-    setStats({
-      totalStudent:
-        res.data.totalStudent ||
-        res.data.totalStudents ||
-        res.data.students ||
-        0,
+  const token = localStorage.getItem("adminToken");
 
-      publishResults: res.data.publishResults || res.data.publishResulted || 0,
-      pendingResults: res.data.pendingResults || res.data.pending || 0,
-    });
+  const axiosConfig = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const showAlert = (msg, type = "success") => {
+    setAlert({ msg, type });
+    setTimeout(() => {
+      setAlert(null);
+    }, 2000);
+  };
+
+  const loadStats = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/publish-results/stats",
+        axiosConfig
+      );
+
+      setStats({
+        totalStudent: res.data.totalStudents || res.data.totalStudent || 0,
+        publishResults:
+          res.data.publishResults || res.data.publishResulted || 0,
+        pendingResults: res.data.pendingResults || res.data.pending || 0,
+      });
+    } catch {
+      showAlert("Failed to load stats", "error");
+    }
   };
 
   const loadResults = async () => {
@@ -52,11 +68,7 @@ function AdminDashboard() {
       await axios.post(
         `http://localhost:5000/api/publish-results/publish/${resultId}`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-          },
-        }
+        axiosConfig
       );
 
       showAlert("Result published successfully");
@@ -72,9 +84,7 @@ function AdminDashboard() {
 
     try {
       await axios.delete(`http://localhost:5000/api/results/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
-        },
+        axiosConfig,
       });
 
       setResults((prev) => prev.filter((r) => r._id !== id));
@@ -99,12 +109,6 @@ function AdminDashboard() {
     }));
   }, [results]);
 
-  const showAlert = (msg, type = "success") => {
-    setAlert({ msg, type });
-    setTimeout(() => {
-      setAlert(null);
-    }, 2000);
-  };
   return (
     <div className="min-h-screen flex bg-gray-900 text-white overflow-x-hidden">
       {alert && (
@@ -217,7 +221,6 @@ function AdminDashboard() {
                       )}
 
                       <button
-                        // disabled={item.isPublished}
                         onClick={() => deleteResult(item._id)}
                         className={`px-4 py-1 rounded 
                                 ${

@@ -7,6 +7,7 @@ import {
   FaFilePdf,
   FaUniversity,
   FaUserGraduate,
+  FaTimesCircle
 } from "react-icons/fa";
 
 function StudentResult() {

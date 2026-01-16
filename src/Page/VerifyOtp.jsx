@@ -14,7 +14,6 @@ function VerifyOtp() {
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
 
- 
   useEffect(() => {
     if (timer <= 0) {
       setCanResend(true);
@@ -28,14 +27,12 @@ function VerifyOtp() {
     return () => clearInterval(interval);
   }, [timer]);
 
-  
   useEffect(() => {
     if (otp.join("").length === 6 && !loading && !verified) {
       handleVerify();
     }
   }, [otp]);
 
- 
   function handleChange(value, index) {
     if (!/^[0-9]?$/.test(value)) return;
 
@@ -62,7 +59,6 @@ function VerifyOtp() {
     inputRefs.current[5]?.focus();
   };
 
- 
   const handleVerify = async () => {
     const enteredOtp = otp.join("");
     const email = localStorage.getItem("email");
@@ -83,7 +79,7 @@ function VerifyOtp() {
 
       const res = await API.post("/admin/verify-otp", {
         email: email.trim(),
-        otp: String(enteredOtp), 
+        otp: String(enteredOtp),
       });
 
       localStorage.setItem("adminToken", res.data.token);
@@ -93,16 +89,12 @@ function VerifyOtp() {
 
       setTimeout(() => navigate("/admin/dashboard"), 1500);
     } catch (err) {
-      showAlert(
-        err?.response?.data?.message || "Invalid OTP",
-        "error"
-      );
+      showAlert(err?.response?.data?.message || "Invalid OTP", "error");
     } finally {
       setLoading(false);
     }
   };
 
- 
   const handleResend = async () => {
     if (!canResend) return;
 
@@ -121,13 +113,11 @@ function VerifyOtp() {
     }
   };
 
-  
   const showAlert = (msg, type = "info") => {
     setAlert({ msg, type });
     setTimeout(() => setAlert(null), 3000);
   };
 
-  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-900 via-gray-900 to-gray-800 px-4">
       {alert && (
@@ -144,9 +134,7 @@ function VerifyOtp() {
           <FiLock className="text-3xl text-blue-400" />
         </div>
 
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Verify OTP
-        </h2>
+        <h2 className="text-2xl font-bold text-white mb-2">Verify OTP</h2>
         <p className="text-gray-400 mb-5">
           Enter the 6-digit OTP sent to your email
         </p>
