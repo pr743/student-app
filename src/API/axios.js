@@ -1,28 +1,24 @@
-
 import axios from "axios";
 
 const API = axios.create({
-  baseUrl : import.meta.env.VITE_Base_Url,
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    req.headers["auth-token"] = token;
-    req.headers.Authorization = `Bearer ${token}`;
-  }
 
-  return req;
+API.interceptors.request.use(
+  (req) => {
+    const adminToken = localStorage.getItem("adminToken");
+    const studentToken = localStorage.getItem("studentToken");
 
-});
+    const token = adminToken || studentToken;
 
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("studentToken");
-  if (token) {
-    req.headers.Authorization = `Bearer ${token}`;
-  }
-  return req;
-});
+    if (token) {
+      req.headers.Authorization = `Bearer ${token}`;
+    }
 
+    return req;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default API;
