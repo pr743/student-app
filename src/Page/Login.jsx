@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import API from "../API/axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import { Lock, Mail, ShieldCheck } from "lucide-react";
 
@@ -110,22 +110,22 @@ function Login() {
 
         <p className="text-gray-400 text-sm text-center mt-3">
           Forget password?{" "}
-          <a
-            href="/forgot-password"
+          <Link
+            to="/forgot-password"
             className="text-blue-400 hover:text-blue-600"
           >
             Reset
-          </a>
+          </Link>
         </p>
 
         <p className="text-gray-400 text-sm text-center mt-5">
           Don’t have an account?{" "}
-          <a
-            href="/admin/register"
+          <Link
+            to="/admin/register"
             className="text-blue-400 hover:text-blue-600"
           >
             Signup
-          </a>
+          </Link>
         </p>
       </form>
     </div>
