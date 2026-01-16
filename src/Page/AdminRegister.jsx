@@ -39,7 +39,8 @@ function AdminRegister() {
       showAlert("Admin Registered successfully");
 
       navigate("/admin/login");
-    } catch {
+    } catch (error) {
+      console.error(error || error.message);
       showAlert("Registration failed", "error");
     } finally {
       setLoading(false);
