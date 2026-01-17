@@ -20,13 +20,17 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    if(loading) return;
+    setLoading(true); 
 
     try {
-      await API.post("/admin/login", form);
+      await API.post("/admin/login", {
+        email: form.email.trim(),
+        password: form.password,
+      });
 
+      localStorage.setItem("email", form.email.trim());
       showAlert("OTP sent to your email");
-      localStorage.setItem("email", form.email);
 
       navigate("/admin/verify-otp");
     } catch {
