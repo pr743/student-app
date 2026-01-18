@@ -145,7 +145,7 @@ function Results() {
 
     setResult(finalResult);
 
-    await fetch("/api/results", {
+    await fetch("/results", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

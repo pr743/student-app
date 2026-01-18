@@ -13,7 +13,6 @@ import {
   Trash2,
 } from "lucide-react";
 
-
 function AdminDashboard() {
   const [stats, setStats] = useState({
     totalStudent: 0,
@@ -43,10 +42,7 @@ function AdminDashboard() {
 
   const loadStats = async () => {
     try {
-      const res = await axios.get(
-        "/api/publish-results/stats",
-        axiosConfig
-      );
+      const res = await axios.get("/api/publish-results/stats", axiosConfig);
 
       setStats({
         totalStudent: res.data.totalStudents || res.data.totalStudent || 0,
@@ -60,21 +56,15 @@ function AdminDashboard() {
   };
 
   const loadResults = async () => {
-
     try {
       const res = await axios.get("/api/results");
 
+      const data = Array.isArray(res.data) ? res.data : res.data.results || [];
 
-    const data = Array.isArray(res.data)
-                  ? res.data
-                  : res.data.results || [];
-       
-    setResults(data);
-      
-    } catch{ 
-      showAlert("Failed to load results","error");
+      setResults(data);
+    } catch {
+      showAlert("Failed to load results", "error");
       setResults([]);
-      
     }
   };
 
@@ -83,7 +73,7 @@ function AdminDashboard() {
       await axios.post(
         `/api/publish-results/publish/${resultId}`,
         {},
-        axiosConfig
+        axiosConfig,
       );
 
       showAlert("Result published successfully");
@@ -204,52 +194,53 @@ function AdminDashboard() {
               </thead>
 
               <tbody>
-                {Array.isArray(results) && results.map((item) => (
-                  <tr
-                    key={item._id}
-                    className="border-t border-gray-700 text-center"
-                  >
-                    <td className="p-2  sm:p-3">
-                      {item?.studentId?.roll ||
-                        item?.studentId?.rollNo ||
-                        "N/A"}
-                    </td>
-                    <td className="p-2  sm:p-3">
-                      {item?.studentId?.name || "N/A"}
-                    </td>
-                    <td className="p-2  sm:p-3">{item?.type || "N/A"}</td>
+                {Array.isArray(results) &&
+                  results.map((item) => (
+                    <tr
+                      key={item._id}
+                      className="border-t border-gray-700 text-center"
+                    >
+                      <td className="p-2  sm:p-3">
+                        {item?.studentId?.roll ||
+                          item?.studentId?.rollNo ||
+                          "N/A"}
+                      </td>
+                      <td className="p-2  sm:p-3">
+                        {item?.studentId?.name || "N/A"}
+                      </td>
+                      <td className="p-2  sm:p-3">{item?.type || "N/A"}</td>
 
-                    <td className="p-2 sm:p-3">
-                      {!item.isPublished ? (
+                      <td className="p-2 sm:p-3">
+                        {!item.isPublished ? (
+                          <button
+                            onClick={() => publishResult(item._id)}
+                            className="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
+                          >
+                            <Send size={16} />
+                            publish
+                          </button>
+                        ) : (
+                          <span className="text-green-400 flex items-center justify-center gap-1">
+                            <CheckCircle size={16} />
+                            Done
+                          </span>
+                        )}
+
                         <button
-                          onClick={() => publishResult(item._id)}
-                          className="bg-blue-600 px-4 py-1 rounded hover:bg-blue-700"
-                        >
-                          <Send size={16} />
-                          publish
-                        </button>
-                      ) : (
-                        <span className="text-green-400 flex items-center justify-center gap-1">
-                          <CheckCircle size={16} />
-                          Done
-                        </span>
-                      )}
-
-                      <button
-                        onClick={() => deleteResult(item._id)}
-                        className={`px-4 py-1 rounded 
+                          onClick={() => deleteResult(item._id)}
+                          className={`px-4 py-1 rounded 
                                 ${
                                   item.isPublished
                                     ? "bg-gray-500 cursor-not-allowed"
                                     : "bg-red-600 hover:bg-red-700"
                                 }`}
-                      >
-                        <Trash2 size={16} className="inline mr-1" />
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                        >
+                          <Trash2 size={16} className="inline mr-1" />
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
 

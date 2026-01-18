@@ -20,7 +20,7 @@ function Institutes() {
 
   const loadInstitutes = async () => {
     try {
-      const res = await API.get("/api/institutes");
+      const res = await API.get("/institutes");
       setList(res.data);
     } catch {
       showAlert("Failed to load institutes", "error");
@@ -39,7 +39,7 @@ function Institutes() {
 
     try {
       if (editId) {
-        await API.put(`/api/institutes/${editId}`, { name, type });
+        await API.put(`/institutes/${editId}`, { name, type });
         showAlert("Institute updated");
       } else {
         await API.post("/api/institutes", { name, type });
@@ -65,7 +65,7 @@ function Institutes() {
     if (!window.confirm("Delete this institute?")) return;
 
     try {
-      await API.delete(`/api/institutes/${id}`);
+      await API.delete(`/institutes/${id}`);
       showAlert("Deleted successfully");
       loadInstitutes();
     } catch {
