@@ -43,8 +43,20 @@ function Students() {
         "/api/students",
         axiosConfig
       );
-      setStudents(res.data.loadStudents || res.data);
+
+      const normalizedStudents = Array.isArray(res.data)
+        ? res.data
+        : Array.isArray(res.data?.students)
+        ? res.data.students
+        : Array.isArray(res.data?.loadStudents)
+        ? res.data.loadStudents
+        : Array.isArray(res.data?.data)
+        ? res.data.data
+        : [];
+
+      setStudents(normalizedStudents);
     } catch {
+      setStudents([]);
       showAlert("Failed to load students", "error");
     }
   };
@@ -55,8 +67,19 @@ function Students() {
         "/api/institutes",
         axiosConfig
       );
-      setInstitute(res.data.institute || res.data);
+
+      const normalizedInstitutes = Array.isArray(res.data)
+        ? res.data
+        : Array.isArray(res.data?.institutes)
+        ? res.data.institutes
+        : Array.isArray(res.data?.institute)
+        ? res.data.institute
+        : Array.isArray(res.data?.data)
+        ? res.data.data
+        : [];
+      setInstitute(normalizedInstitutes);
     } catch {
+      setInstitute([]);
       showAlert("Failed to load institutes", "error");
     }
   };
@@ -135,11 +158,11 @@ function Students() {
     }
   };
 
-  const searched = students.filter((s) =>
-    (s.name + s.rollNo + s.instituteName + s.type)
+  const searched = Array.isArray(students) ? students.filter((s) =>
+    `{s?.name ?? ""}${s?.rollNo??""}$ {s.instituteName ??""} ${s?.type ?? ""}`
       .toLowerCase()
       .includes(search.toLowerCase())
-  );
+     ) : [];
 
   const totalPages = Math.ceil(searched.length / pageSize);
   const start = (currentPage - 1) * pageSize;
