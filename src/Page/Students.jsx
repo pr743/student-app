@@ -39,20 +39,17 @@ function Students() {
 
   const loadStudents = async () => {
     try {
-      const res = await axios.get(
-        "/api/students",
-        axiosConfig
-      );
+      const res = await axios.get("/api/students", axiosConfig);
 
       const normalizedStudents = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data?.students)
-        ? res.data.students
-        : Array.isArray(res.data?.loadStudents)
-        ? res.data.loadStudents
-        : Array.isArray(res.data?.data)
-        ? res.data.data
-        : [];
+          ? res.data.students
+          : Array.isArray(res.data?.loadStudents)
+            ? res.data.loadStudents
+            : Array.isArray(res.data?.data)
+              ? res.data.data
+              : [];
 
       setStudents(normalizedStudents);
     } catch {
@@ -63,20 +60,17 @@ function Students() {
 
   const loadInstitutes = async () => {
     try {
-      const res = await axios.get(
-        "/api/institutes",
-        axiosConfig
-      );
+      const res = await axios.get("/api/institutes", axiosConfig);
 
       const normalizedInstitutes = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data?.institutes)
-        ? res.data.institutes
-        : Array.isArray(res.data?.institute)
-        ? res.data.institute
-        : Array.isArray(res.data?.data)
-        ? res.data.data
-        : [];
+          ? res.data.institutes
+          : Array.isArray(res.data?.institute)
+            ? res.data.institute
+            : Array.isArray(res.data?.data)
+              ? res.data.data
+              : [];
       setInstitute(normalizedInstitutes);
     } catch {
       setInstitute([]);
@@ -105,18 +99,10 @@ function Students() {
 
     try {
       if (editId) {
-        await axios.put(
-          `/api/students/${editId}`,
-          payload,
-          axiosConfig
-        );
+        await axios.put(`/api/students/${editId}`, payload, axiosConfig);
         showAlert("Student updated");
       } else {
-        await axios.post(
-          "api/students/create",
-          payload,
-          axiosConfig
-        );
+        await axios.post("api/students/create", payload, axiosConfig);
         showAlert("Student added");
       }
 
@@ -147,10 +133,7 @@ function Students() {
   const removeStudent = async (id) => {
     if (!window.confirm("Delete this student?")) return;
     try {
-      await axios.delete(
-        `/api/students/${id}`,
-        axiosConfig
-      );
+      await axios.delete(`/api/students/${id}`, axiosConfig);
       showAlert("Deleted successfully");
       loadStudents();
     } catch {
@@ -158,11 +141,13 @@ function Students() {
     }
   };
 
-  const searched = Array.isArray(students) ? students.filter((s) =>
-    `{s?.name ?? ""}${s?.rollNo??""}$ {s.instituteName ??""} ${s?.type ?? ""}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-     ) : [];
+  const searched = Array.isArray(students)
+    ? students.filter((s) =>
+        `{s?.name ?? ""}${s?.rollNo ?? ""}$ {s.instituteName ??""} ${s?.type ?? ""}`
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+      )
+    : [];
 
   const totalPages = Math.ceil(searched.length / pageSize);
   const start = (currentPage - 1) * pageSize;
