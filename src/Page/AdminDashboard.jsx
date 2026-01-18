@@ -13,6 +13,7 @@ import {
   Trash2,
 } from "lucide-react";
 
+
 function AdminDashboard() {
   const [stats, setStats] = useState({
     totalStudent: 0,
@@ -59,8 +60,22 @@ function AdminDashboard() {
   };
 
   const loadResults = async () => {
-    const res = await axios.get("/api/results");
-    setResults(res.data);
+
+    try {
+      const res = await axios.get("/api/results");
+
+
+    const data = Array.isArray(res.data)
+                  ? res.data
+                  : res.data.results || [];
+       
+    setResults(data);
+      
+    } catch{ 
+      showAlert("Failed to load results","error");
+      setResults([]);
+      
+    }
   };
 
   const publishResult = async (resultId) => {
@@ -189,7 +204,7 @@ function AdminDashboard() {
               </thead>
 
               <tbody>
-                {results.map((item) => (
+                {Array.isArray(results) && results.map((item) => (
                   <tr
                     key={item._id}
                     className="border-t border-gray-700 text-center"
