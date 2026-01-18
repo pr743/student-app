@@ -40,7 +40,7 @@ function Students() {
   const loadStudents = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/students",
+        "/api/students",
         axiosConfig
       );
       setStudents(res.data.loadStudents || res.data);
@@ -52,7 +52,7 @@ function Students() {
   const loadInstitutes = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/institutes",
+        "/api/institutes",
         axiosConfig
       );
       setInstitute(res.data.institute || res.data);
@@ -83,14 +83,14 @@ function Students() {
     try {
       if (editId) {
         await axios.put(
-          `http://localhost:5000/api/students/${editId}`,
+          `/api/students/${editId}`,
           payload,
           axiosConfig
         );
         showAlert("Student updated");
       } else {
         await axios.post(
-          "http://localhost:5000/api/students/create",
+          "api/students/create",
           payload,
           axiosConfig
         );
@@ -125,7 +125,7 @@ function Students() {
     if (!window.confirm("Delete this student?")) return;
     try {
       await axios.delete(
-        `http://localhost:5000/api/students/${id}`,
+        `/api/students/${id}`,
         axiosConfig
       );
       showAlert("Deleted successfully");

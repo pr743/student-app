@@ -43,7 +43,7 @@ function AdminDashboard() {
   const loadStats = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/publish-results/stats",
+        "/api/publish-results/stats",
         axiosConfig
       );
 
@@ -59,14 +59,14 @@ function AdminDashboard() {
   };
 
   const loadResults = async () => {
-    const res = await axios.get("http://localhost:5000/api/results");
+    const res = await axios.get("/api/results");
     setResults(res.data);
   };
 
   const publishResult = async (resultId) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/publish-results/publish/${resultId}`,
+        `/api/publish-results/publish/${resultId}`,
         {},
         axiosConfig
       );
@@ -83,7 +83,7 @@ function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this result?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/results/${id}`, {
+      await axios.delete(`/api/results/${id}`, {
         axiosConfig,
       });
 

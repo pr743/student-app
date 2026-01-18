@@ -34,7 +34,7 @@ function Results() {
     const token = localStorage.getItem("adminToken");
     if (!token) return showAlert("Login required", "error");
 
-    const res = await fetch("http://localhost:5000/api/students", {
+    const res = await fetch("/api/students", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -44,7 +44,7 @@ function Results() {
 
   const loadInstitutes = async () => {
     const token = localStorage.getItem("adminToken");
-    const res = await fetch("http://localhost:5000/api/institutes", {
+    const res = await fetch("/api/institutes", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -145,7 +145,7 @@ function Results() {
 
     setResult(finalResult);
 
-    await fetch("http://localhost:5000/api/results", {
+    await fetch("/api/results", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
