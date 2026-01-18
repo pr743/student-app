@@ -13,7 +13,6 @@ function Institutes() {
 
   const pageSize = 10;
 
-
    const token = localStorage.getItem("adminToken");
 
 
