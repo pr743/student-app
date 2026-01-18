@@ -42,7 +42,7 @@ function Institutes() {
         await API.put(`/institutes/${editId}`, { name, type });
         showAlert("Institute updated");
       } else {
-        await API.post("/api/institutes", { name, type });
+        await API.post("/institutes", { name, type });
         showAlert("Institute added");
       }
 
