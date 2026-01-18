@@ -13,6 +13,14 @@ function Institutes() {
 
   const pageSize = 10;
 
+
+   const token = localStorage.getItem("adminToken");
+
+
+  const authHeader = {
+    headers: { Authorization: `Bearer ${token}` },
+  }
+
   const showAlert = (msg, type = "success") => {
     setAlert({ msg, type });
     setTimeout(() => setAlert(null), 2000);
@@ -20,8 +28,8 @@ function Institutes() {
 
   const loadInstitutes = async () => {
     try {
-      const res = await API.get("/institutes");
-      setList(res.data);
+      const res = await API.get("/institutes" , authHeader);
+      setList(Array.isArray(res.data)? res.data : []);
     } catch {
       showAlert("Failed to load institutes", "error");
     }
@@ -39,10 +47,10 @@ function Institutes() {
 
     try {
       if (editId) {
-        await API.put(`/institutes/${editId}`, { name, type });
+        await API.put(`/institutes/${editId}`, { name, type },authHeader);
         showAlert("Institute updated");
       } else {
-        await API.post("/institutes", { name, type });
+        await API.post("/institutes", { name, type },authHeader);
         showAlert("Institute added");
       }
 
@@ -65,7 +73,7 @@ function Institutes() {
     if (!window.confirm("Delete this institute?")) return;
 
     try {
-      await API.delete(`/institutes/${id}`);
+      await API.delete(`/institutes/${id}`,authHeader);
       showAlert("Deleted successfully");
       loadInstitutes();
     } catch {
@@ -121,7 +129,6 @@ function Institutes() {
           className="bg-gray-700 rounded-xl px-3 py-2"
         >
           <option value="school">School</option>
-          <option value="college">College</option>
         </select>
 
         <button
