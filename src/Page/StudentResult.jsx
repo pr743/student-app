@@ -17,7 +17,7 @@ function StudentResult() {
   useEffect(() => {
     const fetchResult = async () => {
       try {
-        const res = await API.get("/api/students/result");
+        const res = await API.get("/students/result");
         setResult(res.data);
       } catch {
         // eslint-disable-next-line react-hooks/immutability

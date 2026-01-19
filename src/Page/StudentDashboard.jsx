@@ -19,12 +19,15 @@ function StudentDashboard() {
       navigate("/student/login");
       return;
     }
-    fetchDashboard();
+    fetchDashboard(token);
   }, []);
 
-  const fetchDashboard = async () => {
+  const fetchDashboard = async (token) => {
     try {
-      const res = await API.get(`${import.meta.env.VITE_BASE_URL}/students/dashboard`);
+      const res = await API.get("/students/dashboard",{
+         headers: { Authorization: `Bearer ${token}` },
+
+      });
 
       setStudent(res.data.student);
       setResult(res.data.result);
