@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import API from "../API/axios";
 import { Lock, ShieldCheck } from "lucide-react";
 
 function ResetPassword() {
+  const {token} = useParams();
+
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!token) {
+      showAlert("Invalid or expired reset link", "error");
+      return;
+    }
     try {
       setLoading(true);
       const res = await API.post("/admin/reset-password", { token, password });

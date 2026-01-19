@@ -27,7 +27,7 @@ function App() {
         <Route path="/admin/login" element={<Login />} />
         <Route path="/admin/verify-otp" element={<VerifyOtp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/admin/reset-password" element={<ResetPassword />} />
+        <Route path="/admin/reset-password/:token" element={<ResetPassword />} />
 
         <Route element={<AdminProtectedRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
