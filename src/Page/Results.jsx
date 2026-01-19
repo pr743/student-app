@@ -313,14 +313,14 @@ function Results() {
 }
 
 const Select = ({ icon, label, value, onChange, children }) => (
-  <div>
+  <div className="w-full">
     <label className="flex gap-2 mb-1">
       {icon} {label}
     </label>
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full p-3 rounded bg-black border border-gray-700"
+      className="w-full  bg-black border border-gray-700  rounded-lg  text-sm sm:text-base px-2 py-2 sm:px-3 sm:py-3 focus:outline-none focus:right-2 focus:ring-blue-500"
     >
       <option value="">Select</option>
       {children}

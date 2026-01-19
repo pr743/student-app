@@ -42,7 +42,7 @@ function AdminDashboard() {
 
   const loadStats = async () => {
     try {
-      const res = await axios.get("/api/publish-results/stats", axiosConfig);
+      const res = await axios.get("/publish-results/stats", axiosConfig);
 
       setStats({
         totalStudent: res.data.totalStudents || res.data.totalStudent || 0,
@@ -57,7 +57,7 @@ function AdminDashboard() {
 
   const loadResults = async () => {
     try {
-      const res = await axios.get("/api/results");
+      const res = await axios.get("/results");
 
       const data = Array.isArray(res.data) ? res.data : res.data.results || [];
 
