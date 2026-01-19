@@ -226,7 +226,7 @@ function Results() {
         >
           {student.map((s) => (
             <option key={s._id} value={s._id}>
-              {s.rollNo} - {s.name}
+              {s.roll} - {s.name}
             </option>
           ))}
         </Select>
