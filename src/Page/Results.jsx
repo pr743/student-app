@@ -10,7 +10,7 @@ import {
 import API from "../API/axios";
 
 function Results() {
-  const [classLevel, setClassLevel] = useState(null);
+  const [classLevel, setClassLevel] = useState("");
   const [stream, setStream] = useState("");
   const [student, setStudent] = useState([]);
   const [studentId, setStudentId] = useState("");
