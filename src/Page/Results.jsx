@@ -10,7 +10,7 @@ import {
 import API from "../API/axios";
 
 function Results() {
-  const [classLevel, setClassLevel] = useState("");
+  const [classLevel, setClassLevel] = useState(null);
   const [stream, setStream] = useState("");
   const [student, setStudent] = useState([]);
   const [studentId, setStudentId] = useState("");
@@ -91,17 +91,14 @@ function Results() {
     setSubjects(streams[val].map((s) => ({ name: s, marks: "" })));
   };
 
-  const handleMarks = (i, val) => {
-    if (val === "") return updateMarks(i, "");
+  const updateMarks = (i, val) => {
+     if (val === "") return updateMarks(i, "");
 
     if (!/^\d+$/.test(val)) return;
 
     if (val < 0 || val > 100) return;
 
-    updateMarks(i, val);
-  };
 
-  const updateMarks = (i, val) => {
     const copy = [...subjects];
     copy[i].marks = val;
     setSubjects(copy);
@@ -173,9 +170,8 @@ function Results() {
     };
 
     try {
-      await API.post("/results", {
-        headers: {
-          "Content-Type": "application/json",
+      await API.post("/results", finalResult, {
+        headers: {    
           Authorization: `Bearer ${token}`,
         },
       });
@@ -288,7 +284,7 @@ function Results() {
               className="w-full mt-2 p-2 rounded bg-gray-800"
               placeholder="Marks"
               value={s.marks}
-              onChange={(e) => handleMarks(i, e.target.value)}
+              onChange={(e) => updateMarks(i, e.target.value)}
             />
           </div>
         ))}
