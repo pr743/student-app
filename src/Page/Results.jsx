@@ -73,15 +73,15 @@ function Results() {
 
   const handelClass = (cls) => {
     const num = Number(cls);
-    setClassLevel(cls);
+    setClassLevel(num);
     setStream("");
     setResult(null);
 
-    if (num <= 5)
+    if (num>=1 &&   num <= 5)
       setSubjects(classSubjects["1-5"].map((s) => ({ name: s, marks: "" })));
-    else if (num <= 8)
+    else if ( num >=6 &&  num <= 8)
       setSubjects(classSubjects["6-8"].map((s) => ({ name: s, marks: "" })));
-    else if (num <= 10)
+    else if (num >=9 &&  num <= 10)
       setSubjects(classSubjects["9-10"].map((s) => ({ name: s, marks: "" })));
     else setSubjects([]);
   };
@@ -126,7 +126,7 @@ function Results() {
     if (!studentId || !classLevel || !instituteId || !resultType)
       return showAlert("All fields required", "error");
 
-    if ((classLevel === "11" || classLevel === "12") && !stream)
+    if ((classLevel === 11 || classLevel === 12) && !stream)
       return showAlert("Stream is required ", "error");
 
     for (const s of subjects) {
@@ -244,7 +244,7 @@ function Results() {
 
         <Select
           icon={<GraduationCap />}
-          value={classLevel}
+          value={classLevel || ""}
           onChange={handelClass}
           label="Class"
         >
