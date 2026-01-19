@@ -31,7 +31,7 @@ function StudentLogin() {
 
       showAlert("Login success");
 
-      navigate("/student/dashboard");
+      navigate("/students-extra/dashboard");
     } catch {
       showAlert("Login failed", "error");
     } finally {
