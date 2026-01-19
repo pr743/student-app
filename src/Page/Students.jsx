@@ -84,8 +84,16 @@ function Students() {
   }, []);
 
   const saveStudent = async () => {
-    if (!name || !roll || !instituteId || !type)
+    if (!name || !roll || !instituteId || !type){
       return showAlert("All fields required", "error");
+
+    }
+
+
+    if(!Number.isInteger(Number(roll)) || Number(roll)<=0){
+      return showAlert("Roll number  must be a positive number","error");
+
+    }
 
     const payload = {
       name,
@@ -94,7 +102,7 @@ function Students() {
       classOrCourse,
       instituteId,
       type,
-    };  
+    };
 
     try {
       if (editId) {
@@ -140,7 +148,7 @@ function Students() {
 
   const searched = Array.isArray(students)
     ? students.filter((s) =>
-        `${s?.name ?? ""}${s?.rollNo ?? ""}${s?.instituteName ??""} ${s?.type ?? ""}`
+        `${s?.name ?? ""}${s?.rollNo ?? ""}${s?.instituteName ?? ""} ${s?.type ?? ""}`
           .toLowerCase()
           .includes(search.toLowerCase()),
       )
@@ -184,18 +192,43 @@ function Students() {
             onChange={(e) => setName(e.target.value)}
             className="px-3 py-2 rounded-xl bg-gray-700"
           />
+
           <input
-            placeholder="Roll Number"
+            type="number"
+            min="1"
+            placeholder="Roll Number (only positive)"
             value={roll}
-            onChange={(e) => setRoll(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (value === "") {
+                setRoll("");
+                return;
+              }
+
+              if (Number(value) < 1) {
+                showAlert("Roll number must be greater than 0", "error");
+                return;
+              }
+
+              setRoll(value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "-" || e.key === "e") {
+                e.preventDefault();
+              }
+            }}
             className="px-3 py-2 rounded-xl bg-gray-700"
           />
+
           <input
-            placeholder="Password= Roll Number"
+            placeholder="Password = Roll Number"
             readOnly
             value={roll}
             className="px-3 py-2 rounded-xl bg-gray-700 cursor-not-allowed opacity-70"
-            onClick={()=> showAlert("password is auto-generated from Roll Number","error")}
+            onClick={() =>
+              showAlert("password is auto-generated from Roll Number", "error")
+            }
           />
           <input
             placeholder="Class / Course"
@@ -225,7 +258,7 @@ function Students() {
               </option>
             ))}
           </select>
-        </div>  
+        </div>
 
         <div className="flex gap-2 flex-wrap mb-4">
           <button
