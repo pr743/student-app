@@ -13,7 +13,6 @@ import {
 function Students() {
   const [name, setName] = useState("");
   const [roll, setRoll] = useState("");
-  const [password, setPassword] = useState("");
   const [classOrCourse, setClassOrCourse] = useState("");
   const [instituteId, setInstituteId] = useState("");
   const [type, setType] = useState("");
@@ -102,13 +101,12 @@ function Students() {
         await API.put(`/students/${editId}`, payload, axiosConfig);
         showAlert("Student updated");
       } else {
-        await API.post("api/students/create", payload, axiosConfig);
+        await API.post("/students/create", payload, axiosConfig);
         showAlert("Student added");
       }
 
       setName("");
       setRoll("");
-      setPassword("");
       setClassOrCourse("");
       setInstituteId("");
       setType("");
@@ -124,7 +122,6 @@ function Students() {
     setEditId(s._id);
     setName(s.name);
     setRoll(s.rollNo);
-    setPassword("");
     setClassOrCourse(s.classOrCourse || "");
     setInstituteId(s.instituteId || "");
     setType(s.type || "");
@@ -143,7 +140,7 @@ function Students() {
 
   const searched = Array.isArray(students)
     ? students.filter((s) =>
-        `{s?.name ?? ""}${s?.rollNo ?? ""}${s?.instituteName ??""} ${s?.type ?? ""}`
+        `${s?.name ?? ""}${s?.rollNo ?? ""}${s?.instituteName ??""} ${s?.type ?? ""}`
           .toLowerCase()
           .includes(search.toLowerCase()),
       )
@@ -194,10 +191,11 @@ function Students() {
             className="px-3 py-2 rounded-xl bg-gray-700"
           />
           <input
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="px-3 py-2 rounded-xl bg-gray-700"
+            placeholder="Password= Roll Number"
+            readOnly
+            value={roll}
+            className="px-3 py-2 rounded-xl bg-gray-700 cursor-not-allowed opacity-70"
+            onClick={()=> showAlert("password is auto-generated from Roll Number","error")}
           />
           <input
             placeholder="Class / Course"
@@ -243,7 +241,6 @@ function Students() {
                 setEditId(null);
                 setName("");
                 setRoll("");
-                setPassword("");
                 setClassOrCourse("");
                 setInstituteId("");
                 setType("");
