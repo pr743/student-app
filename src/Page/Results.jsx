@@ -72,16 +72,16 @@ function Results() {
   };
 
   const handelClass = (cls) => {
-    const num = Number(cls);
-    setClassLevel(num);
+    
+    setClassLevel(cls);
     setStream("");
     setResult(null);
 
-    if (num>=1 &&   num <= 5)
+    if (cls>=1 &&   cls <= 5)
       setSubjects(classSubjects["1-5"].map((s) => ({ name: s, marks: "" })));
-    else if ( num >=6 &&  num <= 8)
+    else if ( cls >=6 &&  cls <= 8)
       setSubjects(classSubjects["6-8"].map((s) => ({ name: s, marks: "" })));
-    else if (num >=9 &&  num <= 10)
+    else if (cls >=9 &&  cls <= 10)
       setSubjects(classSubjects["9-10"].map((s) => ({ name: s, marks: "" })));
     else setSubjects([]);
   };
