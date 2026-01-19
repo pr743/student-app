@@ -8,7 +8,7 @@ function AdminPublishedResults() {
 
   const loadPublished = async () => {
     try {
-      const res = await API.get("/api/results?published=true");
+      const res = await API.get("/results?published=true");
       setResults(res.data);
     } catch (err) {
       console.error("Failed to load published results", err);
