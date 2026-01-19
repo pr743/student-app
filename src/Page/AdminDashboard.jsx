@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-import axios from "axios";
+import API from "../API/axios";
 import {
   Menu,
   X,
@@ -42,7 +42,7 @@ function AdminDashboard() {
 
   const loadStats = async () => {
     try {
-      const res = await axios.get("/publish-results/stats", axiosConfig);
+      const res = await API.get("/publish-results/stats", axiosConfig);
 
       setStats({
         totalStudent: res.data.totalStudents || res.data.totalStudent || 0,
@@ -57,7 +57,7 @@ function AdminDashboard() {
 
   const loadResults = async () => {
     try {
-      const res = await axios.get("/results");
+      const res = await API.get("/results");
 
       const data = Array.isArray(res.data) ? res.data : res.data.results || [];
 
@@ -70,11 +70,7 @@ function AdminDashboard() {
 
   const publishResult = async (resultId) => {
     try {
-      await axios.post(
-        `/api/publish-results/publish/${resultId}`,
-        {},
-        axiosConfig,
-      );
+      await API.post(`/publish-results/publish/${resultId}`, {}, axiosConfig);
 
       showAlert("Result published successfully");
       loadStats();
@@ -88,7 +84,7 @@ function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this result?")) return;
 
     try {
-      await axios.delete(`/api/results/${id}`, {
+      await API.delete(`/results/${id}`, {
         axiosConfig,
       });
 
