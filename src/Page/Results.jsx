@@ -32,7 +32,7 @@ function Results() {
     loadStudents();
     // eslint-disable-next-line react-hooks/immutability
     loadInstitutes();
-  }, []); 
+  }, []);
 
   const loadStudents = async () => {
     try {
@@ -72,19 +72,17 @@ function Results() {
     arts: ["History", "Geography", "Political Science"],
   };
 
-  const handelClass = (value) => {
+  const handelClass = (cls) => {
 
-    const num = Number(value)
-    
-    setClassLevel(num);
+    setClassLevel(cls);
     setStream("");
     setResult(null);
 
-    if (num >=1 &&  num <= 5)
+    if (cls  <= 5)
       setSubjects(classSubjects["1-5"].map((s) => ({ name: s, marks: "" })));
-    else if ( num >=6  &&  num <= 8)
+    else if (cls  <= 8)
       setSubjects(classSubjects["6-8"].map((s) => ({ name: s, marks: "" })));
-    else if ( num >=9 && num <= 10)
+    else if (cls <= 10)
       setSubjects(classSubjects["9-10"].map((s) => ({ name: s, marks: "" })));
     else setSubjects([]);
   };
@@ -95,15 +93,13 @@ function Results() {
   };
 
   const updateMarks = (i, val) => {
-
-
     if (val === "") {
       const copy = [...subjects];
       copy[i].marks = "";
       setSubjects(copy);
       return;
     }
-    
+
     if (!/^\d+$/.test(val)) return;
 
     const num = Number(val);
@@ -181,7 +177,7 @@ function Results() {
 
     try {
       await API.post("/results", finalResult, {
-        headers: {    
+        headers: {
           Authorization: `Bearer ${token}`,
         },
       });
@@ -268,7 +264,7 @@ function Results() {
         <option value="distance">Distance</option>
       </Select>
 
-      {(classLevel === 11 || classLevel === 12) && (  
+      {(classLevel === 11 || classLevel === 12) && (
         <Select
           icon={<BookOpen />}
           value={stream}
@@ -292,7 +288,6 @@ function Results() {
               min="0"
               max="100"
               className="w-full mt-2 p-2 rounded bg-gray-800"
-
               value={s.marks}
               onChange={(e) => updateMarks(i, e.target.value)}
             />
