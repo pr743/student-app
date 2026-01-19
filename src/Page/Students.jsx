@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../API/axios";
 import {
   FiEdit,
   FiPlus,
@@ -39,7 +39,7 @@ function Students() {
 
   const loadStudents = async () => {
     try {
-      const res = await axios.get("/students", axiosConfig);
+      const res = await API.get("/students", axiosConfig);
 
       const normalizedStudents = Array.isArray(res.data)
         ? res.data
@@ -60,7 +60,7 @@ function Students() {
 
   const loadInstitutes = async () => {
     try {
-      const res = await axios.get("/institutes", axiosConfig);
+      const res = await API.get("/institutes", axiosConfig);
 
       const normalizedInstitutes = Array.isArray(res.data)
         ? res.data
@@ -99,10 +99,10 @@ function Students() {
 
     try {
       if (editId) {
-        await axios.put(`/students/${editId}`, payload, axiosConfig);
+        await API.put(`/students/${editId}`, payload, axiosConfig);
         showAlert("Student updated");
       } else {
-        await axios.post("api/students/create", payload, axiosConfig);
+        await API.post("api/students/create", payload, axiosConfig);
         showAlert("Student added");
       }
 
@@ -133,7 +133,7 @@ function Students() {
   const removeStudent = async (id) => {
     if (!window.confirm("Delete this student?")) return;
     try {
-      await axios.delete(`/students/${id}`, axiosConfig);
+      await API.delete(`/students/${id}`, axiosConfig);
       showAlert("Deleted successfully");
       loadStudents();
     } catch {
@@ -227,7 +227,7 @@ function Students() {
               </option>
             ))}
           </select>
-        </div>
+        </div>  
 
         <div className="flex gap-2 flex-wrap mb-4">
           <button
