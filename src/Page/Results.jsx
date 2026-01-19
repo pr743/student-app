@@ -8,6 +8,7 @@ import {
   Award,
 } from "lucide-react";
 import API from "../API/axios";
+import { FaSortNumericUpAlt } from "react-icons/fa";
 
 function Results() {
   const [classLevel, setClassLevel] = useState("");
@@ -31,7 +32,7 @@ function Results() {
     loadStudents();
     // eslint-disable-next-line react-hooks/immutability
     loadInstitutes();
-  }, []);
+  }, []); 
 
   const loadStudents = async () => {
     try {
@@ -71,17 +72,19 @@ function Results() {
     arts: ["History", "Geography", "Political Science"],
   };
 
-  const handelClass = (cls) => {
+  const handelClass = (value) => {
+
+    const num = Number(value)
     
-    setClassLevel(cls);
+    setClassLevel(num);
     setStream("");
     setResult(null);
 
-    if (cls <= 5)
+    if (num >=1 &&  num <= 5)
       setSubjects(classSubjects["1-5"].map((s) => ({ name: s, marks: "" })));
-    else if (cls <= 8)
+    else if ( num >=6  &&  num <= 8)
       setSubjects(classSubjects["6-8"].map((s) => ({ name: s, marks: "" })));
-    else if (cls <= 10)
+    else if ( num >=9 && num <= 10)
       setSubjects(classSubjects["9-10"].map((s) => ({ name: s, marks: "" })));
     else setSubjects([]);
   };
@@ -92,15 +95,22 @@ function Results() {
   };
 
   const updateMarks = (i, val) => {
-     if (val === "") return updateMarks(i, "");
 
+
+    if (val === "") {
+      const copy = [...subjects];
+      copy[i].marks = "";
+      setSubjects(copy);
+      return;
+    }
+    
     if (!/^\d+$/.test(val)) return;
 
-    if (val < 0 || val > 100) return;
-
+    const num = Number(val);
+    if (num < 0 || num > 100) return;
 
     const copy = [...subjects];
-    copy[i].marks = val;
+    copy[i].marks = num;
     setSubjects(copy);
   };
 
@@ -220,7 +230,7 @@ function Results() {
         >
           {student.map((s) => (
             <option key={s._id} value={s._id}>
-              {s.roll} - {s.name}
+              {s.rollNo} - {s.name}
             </option>
           ))}
         </Select>
@@ -240,7 +250,7 @@ function Results() {
 
         <Select
           icon={<GraduationCap />}
-          value={classLevel || ""}
+          value={classLevel}
           onChange={handelClass}
           label="Class"
         >
@@ -258,7 +268,7 @@ function Results() {
         <option value="distance">Distance</option>
       </Select>
 
-      {(classLevel === "11" || classLevel === "12") && (
+      {(classLevel === 11 || classLevel === 12) && (  
         <Select
           icon={<BookOpen />}
           value={stream}
@@ -282,7 +292,7 @@ function Results() {
               min="0"
               max="100"
               className="w-full mt-2 p-2 rounded bg-gray-800"
-              placeholder="Marks"
+
               value={s.marks}
               onChange={(e) => updateMarks(i, e.target.value)}
             />
