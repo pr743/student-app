@@ -7,6 +7,9 @@ import {
   Calculator,
   Award,
 } from "lucide-react";
+import API from "../API/axios";
+
+
 
 function Results() {
   const [classLevel, setClassLevel] = useState("");
@@ -23,6 +26,8 @@ function Results() {
 
   const [alert, setAlert] = useState(null);
 
+  const token = localStorage.getItem("adminToken");
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability
     loadStudents();
@@ -31,25 +36,39 @@ function Results() {
   }, []);
 
   const loadStudents = async () => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) return showAlert("Login required", "error");
 
-    const res = await fetch("/api/students", {
+    try {
+       if (!token) return showAlert("Login required", "error");
+
+    const res = await API.get("/students", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const data = await res.json();
-    setStudent(data.student || data || []);
+    setStudent(res.data.student || res.data || []);
+
+      
+    } catch {
+      showAlert("Failed to load students","error");
+
+
+    }
+
   };
 
   const loadInstitutes = async () => {
-    const token = localStorage.getItem("adminToken");
-    const res = await fetch("/api/institutes", {
+
+    try {
+      const res = await API.get("/institutes", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    const data = await res.json();
-    setInstitute(data.institutes || data || []);
+    setInstitute(res.data.institutes || res.data || []);
+      
+    } catch {
+      showAlert("Failed to load institutes","error");
+      
+    }
+   
   };
 
   const classSubjects = {
@@ -170,18 +189,26 @@ function Results() {
       overallGrade: fail ? "F" : gradeFromMarks(percentage),
     };
 
-    setResult(finalResult);
 
-    await fetch("/api/results", {
-      method: "POST",
+
+
+
+    try {
+      await API.post("/results", {
+
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(finalResult),
-    });
+     });
+      setResult(finalResult);
+      showAlert("Result saved successfully");
 
-    showAlert("Result saved successfully");
+ 
+    } catch{
+       showAlert("Failed to save result","error");
+      
+    }
   };
 
   const showAlert = (msg, type = "success") => {
@@ -280,7 +307,7 @@ function Results() {
           <div key={i} className="bg-black p-4 rounded-xl">
             <label>{s.name}</label>
             <input
-              type = "Number"
+              type = "number"
               min = "0"
               max = "100"
               className="w-full mt-2 p-2 rounded bg-gray-800"
