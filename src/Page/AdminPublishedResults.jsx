@@ -117,8 +117,38 @@ function MarksheetModal({ result, close }) {
           <p><b>Class:</b> {classValue}</p>
           <p><b>Exam:</b> {result.type}</p>
         </div>
+        <div className="mt-4">
+          <h4 className="font-semibold mb-2">Subjects</h4>
+
+          <div className="space-y-2">
+            {result.subjectResult?.map((s, i) => (
+              <div
+                key={i}
+                className="flex justify-between bg-gray-800 px-3 py-2 rounded-lg text-sm"
+              >
+                <span>{s.name}</span>
+                <span>{s.marks}</span>
+                <span className={s.status === "PASS" ? "text-green-400" : "text-red-400"}>
+                  {s.grade}
+                </span>
+              </div>
+            ))}
+          </div>
+          </div>
+
+          <div className="mt-4 border-t border-gray-700 pt-3 text-sm space-y-1">
+          <p><b>Total:</b> {result.total}</p>
+          <p><b>Percentage:</b> {result.percentage}%</p>
+          <p>
+            <b>Status:</b>{" "}
+            <span className={result.overallStatus === "PASS" ? "text-green-400" : "text-red-400"}>
+              {result.overallStatus}
+            </span>
+          </p>
+          <p><b>Grade:</b> {result.overallGrade}</p>
+        </div>
       </div>
-    </div>
+      </div>
   );
 }
 
