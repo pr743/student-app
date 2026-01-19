@@ -27,11 +27,9 @@ function StudentLogin() {
       const res = await API.post("/students/login", form);
 
       localStorage.setItem("studentToken", res.data.token);
-      localStorage.setItem("studentData", JSON.stringify(res.data.student));
+      navigate("/students-extra/dashboard");
 
       showAlert("Login success");
-
-      navigate("/students-extra/dashboard");
     } catch {
       showAlert("Login failed", "error");
     } finally {

@@ -71,7 +71,7 @@ function AdminPublishedResults() {
         </table>
       </div>
 
-      {/* MOBILE VIEW */}
+      
       <div className="md:hidden space-y-4">
         {results.map((r) => (
           <div key={r._id} className="bg-gray-800 border border-gray-700 rounded-2xl p-4">

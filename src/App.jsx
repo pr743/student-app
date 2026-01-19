@@ -43,7 +43,7 @@ function App() {
         <Route path="/student/login" element={<StudentLogin />} />
 
         <Route element={<StudentProtectedRoute />}>
-          <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route path="/students-extra/dashboard" element={<StudentDashboard />} />
           <Route path="/student/result" element={<StudentResult />} />
         </Route>
       </Routes>
