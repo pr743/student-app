@@ -320,7 +320,7 @@ const Select = ({ icon, label, value, onChange, children }) => (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full  bg-black border border-gray-700  rounded-lg  text-sm sm:text-base px-2 py-2 sm:px-3 sm:py-3 focus:outline-none focus:right-2 focus:ring-blue-500"
+      className="w-full bg-black border border-gray-700  rounded-lg  text-sm sm:text-base px-2 py-2 sm:px-3 sm:py-3 focus:outline-none focus:right-2 focus:ring-blue-500"
     >
       <option value="">Select</option>
       {children}
