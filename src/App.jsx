@@ -16,6 +16,7 @@ import Home from "./Page/Home";
 import StudentDashboard from "./Page/StudentDashboard";
 import AdminPublishedResults from "./Page/AdminPublishedResults";
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -33,7 +34,10 @@ function App() {
           <Route path="/admin/institutes" element={<Institutes />} />
           <Route path="/admin/students" element={<Students />} />
           <Route path="/admin/results" element={<Results />} />
-          <Route path="/admin/published-results" element={<AdminPublishedResults />} />
+          <Route
+            path="/admin/published-results"
+            element={<AdminPublishedResults />}
+          />
         </Route>
 
         <Route path="/student/login" element={<StudentLogin />} />

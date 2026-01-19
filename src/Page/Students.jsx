@@ -91,7 +91,7 @@ function Students() {
     const payload = {
       name,
       rollNo: roll,
-      password: password || roll,
+      password: roll,
       classOrCourse,
       instituteId,
       type,
