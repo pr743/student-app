@@ -9,8 +9,6 @@ import {
 } from "lucide-react";
 import API from "../API/axios";
 
-
-
 function Results() {
   const [classLevel, setClassLevel] = useState("");
   const [stream, setStream] = useState("");
@@ -36,39 +34,29 @@ function Results() {
   }, []);
 
   const loadStudents = async () => {
-
     try {
-       if (!token) return showAlert("Login required", "error");
+      if (!token) return showAlert("Login required", "error");
 
-    const res = await API.get("/students", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+      const res = await API.get("/students", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    setStudent(res.data.student || res.data || []);
-
-      
+      setStudent(res.data.student || res.data || []);
     } catch {
-      showAlert("Failed to load students","error");
-
-
+      showAlert("Failed to load students", "error");
     }
-
   };
 
   const loadInstitutes = async () => {
-
     try {
       const res = await API.get("/institutes", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    setInstitute(res.data.institutes || res.data || []);
-      
+      setInstitute(res.data.institutes || res.data || []);
     } catch {
-      showAlert("Failed to load institutes","error");
-      
+      showAlert("Failed to load institutes", "error");
     }
-   
   };
 
   const classSubjects = {
@@ -84,7 +72,7 @@ function Results() {
   };
 
   const handelClass = (cls) => {
-    const num = Number(cls)
+    const num = Number(cls);
     setClassLevel(cls);
     setStream("");
     setResult(null);
@@ -104,18 +92,16 @@ function Results() {
   };
 
   const handleMarks = (i, val) => {
-    if(val === "")   return updateMarks(i,"");
+    if (val === "") return updateMarks(i, "");
 
     if (!/^\d+$/.test(val)) return;
 
-    if(val < 0 || val > 100)  return;
+    if (val < 0 || val > 100) return;
 
-    updateMarks(i,val );
-
+    updateMarks(i, val);
   };
 
-
-  const updateMarks  = (i,val) =>{
+  const updateMarks = (i, val) => {
     const copy = [...subjects];
     copy[i].marks = val;
     setSubjects(copy);
@@ -125,33 +111,30 @@ function Results() {
     m >= 90
       ? "A+"
       : m >= 80
-      ? "A"
-      : m >= 70
-      ? "B+"
-      : m >= 60
-      ? "B"
-      : m >= 50
-      ? "C"
-      : m >= 40
-      ? "D"
-      : "F";
+        ? "A"
+        : m >= 70
+          ? "B+"
+          : m >= 60
+            ? "B"
+            : m >= 50
+              ? "C"
+              : m >= 40
+                ? "D"
+                : "F";
 
   const generateResult = async () => {
     if (!studentId || !classLevel || !instituteId || !resultType)
       return showAlert("All fields required", "error");
 
+    if ((classLevel === "11" || classLevel === "12") && !stream)
+      return showAlert("Stream is required ", "error");
 
-    if((classLevel === "11" || classLevel === "12") && !stream)   
-      return showAlert("Stream is required ","error");
+    for (const s of subjects) {
+      if (s.marks === "")
+        return showAlert("Enter marks for all subjects", "error");
 
-
-
-    for( const s of subjects){
-      if(s.marks === "")
-        return showAlert("Enter marks for all subjects","error");
-
-      if(s.marks < 0 || s.marks > 100)
-        return showAlert("Marks must be 0-100 ","error")
+      if (s.marks < 0 || s.marks > 100)
+        return showAlert("Marks must be 0-100 ", "error");
     }
 
     const st = student.find((s) => s._id === studentId || s.id === studentId);
@@ -189,25 +172,17 @@ function Results() {
       overallGrade: fail ? "F" : gradeFromMarks(percentage),
     };
 
-
-
-
-
     try {
       await API.post("/results", {
-
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-     });
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setResult(finalResult);
       showAlert("Result saved successfully");
-
- 
-    } catch{
-       showAlert("Failed to save result","error");
-      
+    } catch {
+      showAlert("Failed to save result", "error");
     }
   };
 
@@ -307,9 +282,9 @@ function Results() {
           <div key={i} className="bg-black p-4 rounded-xl">
             <label>{s.name}</label>
             <input
-              type = "number"
-              min = "0"
-              max = "100"
+              type="number"
+              min="0"
+              max="100"
               className="w-full mt-2 p-2 rounded bg-gray-800"
               placeholder="Marks"
               value={s.marks}
@@ -356,10 +331,3 @@ const Select = ({ icon, label, value, onChange, children }) => (
 );
 
 export default Results;
-
-
-
-
-
-
-
