@@ -35,8 +35,6 @@ function Results() {
 
   const loadStudents = async () => {
     try {
-
-
       const res = await API.get("/students", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -77,11 +75,11 @@ function Results() {
     setStream("");
     setResult(null);
 
-    if (num >=1   &&num <= 5)
+    if (num >= 1 && num <= 5)
       setSubjects(classSubjects["1-5"].map((s) => ({ name: s, marks: "" })));
-    else if ( num >=6 && num  <= 8)
+    else if (num >= 6 && num <= 8)
       setSubjects(classSubjects["6-8"].map((s) => ({ name: s, marks: "" })));
-    else if (num >=9 && num <= 10)
+    else if (num >= 9 && num <= 10)
       setSubjects(classSubjects["9-10"].map((s) => ({ name: s, marks: "" })));
     else setSubjects([]);
   };
@@ -321,9 +319,7 @@ const Select = ({ icon, label, value, onChange, children }) => (
     </label>
     <select
       value={value}
-      onChange={(e) =>
-        onChange(isNaN(e.target.value) ? e.target.value : Number(e.target.value))
-      }
+      onChange={(e) => onChange(e.target.value)}
       className="w-full p-3 rounded bg-black border border-gray-700"
     >
       <option value="">Select</option>
@@ -333,9 +329,3 @@ const Select = ({ icon, label, value, onChange, children }) => (
 );
 
 export default Results;
-
-
-
-
-
-
