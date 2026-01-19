@@ -8,7 +8,6 @@ import {
   Award,
 } from "lucide-react";
 import API from "../API/axios";
-import { FaSortNumericUpAlt } from "react-icons/fa";
 
 function Results() {
   const [classLevel, setClassLevel] = useState("");
