@@ -95,7 +95,7 @@ function Students() {
       classOrCourse,
       instituteId,
       type,
-    };
+    };  
 
     try {
       if (editId) {
@@ -143,7 +143,7 @@ function Students() {
 
   const searched = Array.isArray(students)
     ? students.filter((s) =>
-        `{s?.name ?? ""}${s?.rollNo ?? ""}$ {s.instituteName ??""} ${s?.type ?? ""}`
+        `{s?.name ?? ""}${s?.rollNo ?? ""}$ {s?.instituteName ??""} ${s?.type ?? ""}`
           .toLowerCase()
           .includes(search.toLowerCase()),
       )
