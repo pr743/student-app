@@ -65,15 +65,16 @@ function Results() {
   };
 
   const handelClass = (cls) => {
+    const num = Number(cls)
     setClassLevel(cls);
     setStream("");
     setResult(null);
 
-    if (cls <= 5)
+    if (num <= 5)
       setSubjects(classSubjects["1-5"].map((s) => ({ name: s, marks: "" })));
-    else if (cls <= 8)
+    else if (num <= 8)
       setSubjects(classSubjects["6-8"].map((s) => ({ name: s, marks: "" })));
-    else if (cls <= 10)
+    else if (num <= 10)
       setSubjects(classSubjects["9-10"].map((s) => ({ name: s, marks: "" })));
     else setSubjects([]);
   };
@@ -84,6 +85,18 @@ function Results() {
   };
 
   const handleMarks = (i, val) => {
+    if(val === "")   return updateMarks(i,"");
+
+    if (!/^\d+$/.test(val)) return;
+
+    if(val < 0 || val > 100)  return;
+
+    updateMarks(i,val );
+
+  };
+
+
+  const updateMarks  = (i,val) =>{
     const copy = [...subjects];
     copy[i].marks = val;
     setSubjects(copy);
@@ -105,8 +118,22 @@ function Results() {
       : "F";
 
   const generateResult = async () => {
-    if (!studentId || !classLevel || !instituteId)
+    if (!studentId || !classLevel || !instituteId || !resultType)
       return showAlert("All fields required", "error");
+
+
+    if((classLevel === "11" || classLevel === "12") && !stream)   
+      return showAlert("Stream is required ","error");
+
+
+
+    for( const s of subjects){
+      if(s.marks === "")
+        return showAlert("Enter marks for all subjects","error");
+
+      if(s.marks < 0 || s.marks > 100)
+        return showAlert("Marks must be 0-100 ","error")
+    }
 
     const st = student.find((s) => s._id === studentId || s.id === studentId);
     if (!st) return showAlert("Student not found", "error");
@@ -130,7 +157,7 @@ function Results() {
     const finalResult = {
       studentId,
       studentName: st.name,
-      roll: st.roll,
+      roll: st.rollNo,
       instituteId,
       classLevel,
       stream,
@@ -145,7 +172,7 @@ function Results() {
 
     setResult(finalResult);
 
-    await fetch("/results", {
+    await fetch("/api/results", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -253,6 +280,9 @@ function Results() {
           <div key={i} className="bg-black p-4 rounded-xl">
             <label>{s.name}</label>
             <input
+              type = "Number"
+              min = "0"
+              max = "100"
               className="w-full mt-2 p-2 rounded bg-gray-800"
               placeholder="Marks"
               value={s.marks}
@@ -273,7 +303,7 @@ function Results() {
         <div className="mt-6 bg-black p-6 rounded-xl">
           <h2 className="text-xl font-bold mb-2">Marksheet</h2>
           <p>Name: {result.studentName}</p>
-          <p>Roll: {result.roll}</p>
+          <p>Roll: {result.rollNo}</p>
           <p>Percentage: {result.percentage}%</p>
           <p>Status: {result.overallStatus}</p>
         </div>
