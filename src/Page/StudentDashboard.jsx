@@ -18,14 +18,12 @@ function StudentDashboard() {
   }, []);
 
   const fetchDashboard = async () => {
-    try {
-      const token = localStorage.getItem("studentToken");
-
+     const token = localStorage.getItem("studentToken");
       if (!token) {
         navigate("/student/login");
         return;
       }
-
+    try {
       const res = await API.get("/students-extra/dashboard", {
         headers: {
           Authorization: `Bearer ${token}`,
