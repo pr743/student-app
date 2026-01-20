@@ -15,23 +15,22 @@ function StudentDashboard() {
 
 
 
-  
-   const token = localStorage.getItem("studentToken");
-
   useEffect(() => {
-    if (!token) {
-      navigate("/student/login");
-      return;
-    }
-    fetchDashboard(token);
+    fetchDashboard();
   }, []);
 
   const fetchDashboard = async () => {
    
     try {
+       const token = localStorage.getItem("studentToken");
+
+
+       if(!token){
+         navigate("/student/login");
+       }
       
       const res = await API.get("/students-extra/dashboard",{
-         headers: { Authorization: `Bearer ${localStorage.getItem("studentToken")}` },
+         headers: { Authorization: `Bearer ${token}` },
 
       });
       setStudent(res.data.student);
