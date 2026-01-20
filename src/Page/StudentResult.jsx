@@ -38,7 +38,7 @@ function StudentResult() {
 
   const downloadPDF = async () => {
     try {
-      const res = await API.get("/students-extra/marksheet/pdf", {
+      const res = await API.get("/students/marksheet/pdf", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("studentToken")}`,
         },
