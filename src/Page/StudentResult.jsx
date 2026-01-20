@@ -17,7 +17,7 @@ function StudentResult() {
   useEffect(() => {
     const fetchResult = async () => {
       try {
-        const res = await API.get("/students/result");
+        const res = await API.get("/students-extra/result");
         setResult(res.data);
       } catch {
         // eslint-disable-next-line react-hooks/immutability
@@ -38,7 +38,7 @@ function StudentResult() {
 
   const downloadPDF = async () => {
     try {
-      const res = await API.get("/students/marksheet/pdf", {
+      const res = await API.get("/students-extra/marksheet/pdf", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("studentToken")}`,
         },

@@ -32,8 +32,7 @@ function StudentDashboard() {
 
       setStudent(res.data.student);
       setResult(res.data.result);
-    } catch (error) {
-      console.error("Dashboard Error:", error);
+    } catch {
       localStorage.clear();
       navigate("/student/login");
     } finally {
