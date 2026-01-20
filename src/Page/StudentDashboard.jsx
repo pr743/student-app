@@ -13,29 +13,30 @@ function StudentDashboard() {
   const [student, setStudent] = useState(null);
   const [result, setResult] = useState(null);
 
-
-
   useEffect(() => {
     fetchDashboard();
   }, []);
 
   const fetchDashboard = async () => {
-   
     try {
-       const token = localStorage.getItem("studentToken");
+      const token = localStorage.getItem("studentToken");
 
+      if (!token) {
+        navigate("/student/login");
+        return;
+      }
 
-       if(!token){
-         navigate("/student/login");
-       }
-      
-      const res = await API.get("/students-extra/dashboard",{
-         headers: { Authorization: `Bearer ${token}` },
-
+      const res = await API.get("/students-extra/dashboard", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
       setStudent(res.data.student);
       setResult(res.data.result);
-    } catch {
+    } catch (error) {
+      console.error("Dashboard Error:", error);
+      localStorage.clear();
       navigate("/student/login");
     } finally {
       setLoading(false);
@@ -45,33 +46,27 @@ function StudentDashboard() {
   if (loading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-900  via-purple-800 to-pink-700 flex justify-center px-3">
+    <div className="min-h-screen bg-gradient-to-tr from-blue-900 via-purple-800 to-pink-700 flex justify-center px-3">
       <div className="bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl rounded-3xl p-10 w-full max-w-3xl">
-        
 
-        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-3 mb-6">
-        <div className="p-3 rounded-full bg-blue-600/50 text-blue-400">
-          <MdDashboard className="w-6 h-6 sm:w-7 sm:h-7" />
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-3 rounded-full bg-blue-600/50 text-blue-400">
+            <MdDashboard className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl font-bold text-white">Student Dashboard</h1>
         </div>
-
-        <h1 className="text-2xl sm:text-3xl font-bold text-center sm:text-left   text-white">
-          Student Dashboard
-        </h1>
-      </div>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white/20 rounded-2xl p-6 shadow-xl">
-            <h2 className="text-xl font-semibold text-white mb-4">
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <FaUserGraduate /> Student Information
             </h2>
 
-            <p className="text-gray-100">
-              <FaIdCard />
-              <b>Name:</b> {student.name}
+            <p className="text-gray-100 flex items-center gap-2">
+              <FaIdCard /> <b>Name:</b> {student?.name}
             </p>
-            <p className="text-gray-100">
-              <FaIdCard />
-              <b>Roll No:</b> {student.rollNo}
+            <p className="text-gray-100 flex items-center gap-2">
+              <FaIdCard /> <b>Roll No:</b> {student?.rollNo}
             </p>
           </div>
 
@@ -85,13 +80,13 @@ function StudentDashboard() {
 
                 <button
                   onClick={() => navigate("/student/result")}
-                  className="w-full py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:scale-105 transition shadow-lg"
+                  className="w-full py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:scale-105 transition"
                 >
                   View Marksheet
                 </button>
               </>
             ) : (
-              <p className="text-yellow-300 font-semibold">
+              <p className="text-yellow-300 font-semibold flex items-center gap-2">
                 <MdOutlinePendingActions size={20} />
                 Result Not Published Yet
               </p>
@@ -99,13 +94,13 @@ function StudentDashboard() {
           </div>
         </div>
 
-        <div className="mt-8 flex justify-between">
+        <div className="mt-8">
           <button
             onClick={() => {
               localStorage.clear();
               navigate("/student/login");
             }}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700 shadow"
+            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-red-600 text-white"
           >
             <FaSignOutAlt /> Logout
           </button>
