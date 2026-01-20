@@ -33,6 +33,7 @@ function AdminRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true)
 
     console.log("Sending form:", form);
 
@@ -58,7 +59,7 @@ function AdminRegister() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr form-gray-900  via-gray-800 to-gray-900 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-900 via-gray-800 to-gray-900 px-4">
      {alert && (
         <div
           className={`fixed top-4 left-1/2 -translate-x-1/2 
