@@ -35,7 +35,6 @@ function AdminRegister() {
 
     setLoading(true)
 
-    console.log("Sending form:", form);
 
     try {
       await API.post("/admin/register", form);
@@ -43,8 +42,8 @@ function AdminRegister() {
       showAlert("Admin Registered successfully");
 
       navigate("/admin/login");
-    } catch {
-    
+    } catch (error) {
+      console.error(error);
       showAlert("Registration failed", "error");
     } finally {
       setLoading(false);
