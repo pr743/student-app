@@ -13,8 +13,12 @@ function StudentDashboard() {
   const [student, setStudent] = useState(null);
   const [result, setResult] = useState(null);
 
+
+
+  
+   const token = localStorage.getItem("studentToken");
+
   useEffect(() => {
-    const token = localStorage.getItem("studentToken");
     if (!token) {
       navigate("/student/login");
       return;
@@ -22,14 +26,14 @@ function StudentDashboard() {
     fetchDashboard(token);
   }, []);
 
-  const fetchDashboard = async (token) => {
+  const fetchDashboard = async () => {
+   
     try {
       
       const res = await API.get("/students-extra/dashboard",{
-         headers: { Authorization: `Bearer ${token}` },
+         headers: { Authorization: `Bearer ${localStorage.getItem("studentToken")}` },
 
       });
-
       setStudent(res.data.student);
       setResult(res.data.result);
     } catch {
