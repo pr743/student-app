@@ -27,11 +27,10 @@ function StudentLogin() {
       const res = await API.post("/students/login", form);
 
       localStorage.setItem("studentToken", res.data.token);
-      navigate("/dashboard");
+      navigate("/students-extra/dashboard");
 
       showAlert("Login success");
-    } catch (error) {
-      console.error(error);
+    } catch {
       showAlert("Login failed", "error");
     } finally {
       setLoading(false);
